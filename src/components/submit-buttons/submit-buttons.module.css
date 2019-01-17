@@ -1,0 +1,9 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  width: 300px;
+  margin: auto auto 20px;
+}
