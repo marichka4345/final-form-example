@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 
-export default function RadioGroupControl ({groupName, input, meta, values}) {
+export default function RadioGroupControl ({groupName, input, values}) {
     return (
       <FormControl>
           <FormLabel>{groupName}</FormLabel>
@@ -29,7 +29,6 @@ export default function RadioGroupControl ({groupName, input, meta, values}) {
 RadioGroupControl.propTypes = {
     groupName: PropTypes.string.isRequired,
     input: PropTypes.object.isRequired,
-    meta: PropTypes.object.isRequired,
     values: PropTypes.array.isRequired
 };
 

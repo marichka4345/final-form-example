@@ -19,7 +19,7 @@ export default class App extends Component {
           <JssProvider jss={jss} generateClassName={generateClassName}>
               <Fragment>
 
-                  <div id="submit-buttons"></div>
+                  <div id="submit-buttons" />
                   <TestForm />
 
               </Fragment>

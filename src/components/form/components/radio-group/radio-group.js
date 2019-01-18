@@ -1,18 +1,22 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Field} from 'react-final-form';
 import RadioGroupControl from '../../../common/radio-group/radio-group';
 import {OPTIONS} from '../../../../constants/options';
 
-export const RadioGroup = ({name, groupName}) => {
+export const RadioGroup = ({name, groupName, renderError}) => {
     const renderRadioGroup = ({input, meta}) => {
         const controlProps = {
             input,
-            meta,
             groupName,
             values: OPTIONS
         };
-        return (<RadioGroupControl {...controlProps} />);
+        return (
+          <Fragment>
+              <RadioGroupControl {...controlProps} />
+              {renderError(meta)}
+          </Fragment>
+        );
     };
 
     return (
@@ -26,5 +30,6 @@ export const RadioGroup = ({name, groupName}) => {
 
 RadioGroup.propTypes = {
     name: PropTypes.string.isRequired,
-    groupName: PropTypes.string.isRequired
+    groupName: PropTypes.string.isRequired,
+    renderError: PropTypes.func.isRequired
 };

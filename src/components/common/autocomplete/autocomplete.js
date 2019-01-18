@@ -77,7 +77,9 @@ Autocomplete.propTypes = {
     input: PropTypes.object.isRequired,
     hasError: PropTypes.bool.isRequired,
     type: PropTypes.string.isRequired,
-    mutators: PropTypes.object.isRequired,
+    mutators: PropTypes.shape({
+        setValue: PropTypes.func.isRequired
+    }).isRequired,
     options: PropTypes.arrayOf(PropTypes.shape({
         value: PropTypes.any.isRequired,
         label: PropTypes.string.isRequired

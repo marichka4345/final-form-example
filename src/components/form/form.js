@@ -51,7 +51,7 @@ export const TestForm = () => {
                         {renderControls(form.mutators, styles.error)}
 
                         <SubmitButtons
-                          onClick={() => console.log(form)}
+                          onClick={() => form.submit()}
                           isSubmitting={submitting}
                           portalContainerSelector="submit-buttons"
                         />

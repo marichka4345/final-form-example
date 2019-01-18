@@ -35,8 +35,6 @@ export default class DraftJsEditor extends Component {
         this.onChange(RichUtils.toggleInlineStyle(value, style));
     };
 
-    onMouseDown = e => e.preventDefault();
-
     handleKeyCommand = (command, editorState) => {
         const newState = RichUtils.handleKeyCommand(editorState, command);
 
@@ -62,7 +60,7 @@ export default class DraftJsEditor extends Component {
                     <IconButton
                       key={style} name={style}
                       onClick={this.onStyleBtnClick}
-                      onMouseDown={this.onMouseDown}
+                      onMouseDown={e => e.preventDefault()}
                     >
                         {TOOLBAR_ICONS[style]}
                     </IconButton>

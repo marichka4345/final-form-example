@@ -1,5 +1,4 @@
 import {EditorState, ContentState} from 'draft-js';
-
 import * as FIELDS from '../../../constants/form-fields';
 import {OPTIONS} from '../../../constants/options';
 import * as CONTROL_TYPE from '../../../constants/control-types';
@@ -75,7 +74,10 @@ export const errors = (values) => ({
       required('Autocomplete2 is required')
     ],
     [FIELDS.DRAFTJS]: [
-      minDraftJs(5, 'Min 5 symbols'),
-      maxDraftJs(100, 'MAx 100 symbols')
+      minDraftJs(5, 'You should enter minimum 5 symbols'),
+      maxDraftJs(100, 'You should enter less than 100 symbols')
+    ],
+    [FIELDS.RADIOGROUP1]: [
+      required('You should choose one option')
     ]
 });

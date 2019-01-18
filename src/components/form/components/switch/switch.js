@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {Field} from 'react-final-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SwitchElement from '@material-ui/core/Switch';
@@ -32,4 +33,8 @@ export const Switch = ({name}) => {
         render={renderSwitch}
       />
     );
+};
+
+Switch.propTypes = {
+    name: PropTypes.string.isRequired
 };
