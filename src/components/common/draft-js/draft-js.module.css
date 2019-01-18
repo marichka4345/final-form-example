@@ -4,6 +4,6 @@
   border: 1px solid gray;
 }
 
-.toolbar {
-  display: flex;
+.error {
+  border-color: red;
 }

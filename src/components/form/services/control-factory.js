@@ -7,8 +7,9 @@ import {RadioGroup} from '../components/radio-group/radio-group';
 import {DraftJs} from '../components/draft-js/draft-js';
 import {TextInput} from '../components/text-input/text-input';
 import * as CONTROL_TYPE from '../../../constants/control-types';
+import {shouldDisplayError} from '../../../services/control-errors';
 
-export const renderControls = (mutators) => {
+export const renderControls = (mutators, errorClass) => {
     return Object.entries(CONFIG.FORM_SCHEMA).map(([name, controlData]) => {
 
         const {
@@ -18,7 +19,14 @@ export const renderControls = (mutators) => {
         } = controlData;
 
         const commonProps = {
-            name
+            name,
+            key: name,
+            renderError(meta) {
+                return (
+                  shouldDisplayError(meta) &&
+                  <div className={errorClass}>{meta.error}</div>
+                );
+            }
         };
 
         switch(type) {

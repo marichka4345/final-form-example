@@ -5,12 +5,13 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Select from '@material-ui/core/Select/Select';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 
-export default function Dropdown({input, meta, values}) {
+export default function Dropdown({input, hasError, values}) {
     const {name} = input;
 
     return (
       <FormControl
-        error={meta.touched && meta.error}
+        error={hasError}
+        {...input}
       >
           <InputLabel>{name}</InputLabel>
 
@@ -27,7 +28,7 @@ export default function Dropdown({input, meta, values}) {
 
 Dropdown.propTypes = {
     input: PropTypes.object.isRequired,
-    meta: PropTypes.object.isRequired,
+    hasError: PropTypes.bool.isRequired,
     values: PropTypes.array.isRequired
 };
 

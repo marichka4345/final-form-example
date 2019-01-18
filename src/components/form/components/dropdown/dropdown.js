@@ -1,17 +1,23 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Field} from 'react-final-form';
 import DropdownControl from '../../../common/dropdown/dropdown';
 import {OPTIONS} from '../../../../constants/options';
+import {shouldDisplayError} from '../../../../services/control-errors';
 
-export const Dropdown = ({name}) => {
+export const Dropdown = ({name, renderError}) => {
     const renderDropdown = ({input, meta}) => {
         const controlProps = {
             input,
-            meta,
+            hasError: shouldDisplayError(meta),
             values: OPTIONS
         };
-        return (<DropdownControl {...controlProps} />);
+        return (
+          <Fragment>
+              <DropdownControl {...controlProps} />
+              {renderError(meta)}
+          </Fragment>
+        );
     };
 
     return (
@@ -23,5 +29,6 @@ export const Dropdown = ({name}) => {
 };
 
 Dropdown.propTypes = {
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    renderError: PropTypes.func.isRequired
 };

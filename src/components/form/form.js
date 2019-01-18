@@ -1,10 +1,10 @@
 import React from 'react';
 import {Form} from 'react-final-form';
 import {renderControls} from './services/control-factory';
-import * as FIELDS from '../../constants/form-fields';
-import {INITIAL_VALUES} from './constants/form-config';
+import {INITIAL_VALUES, errors} from './constants/form-config';
+import {FORM_SCHEMA} from './constants/form-config';
+import {SubmitButtons} from '../submit-buttons/submit-buttons';
 import styles from './form.module.css';
-import {SubmitButtons} from "../submit-buttons/submit-buttons";
 
 export const TestForm = () => {
     const onSubmit = (values) => {
@@ -16,13 +16,21 @@ export const TestForm = () => {
     };
 
     const validate = values => {
-        const errors = {};
+        const formErrors = {};
 
-        if (!values[[FIELDS.TEXT1]]) {
-            errors[FIELDS.TEXT1] = 'Text1 is required';
-        }
+        Object.keys(FORM_SCHEMA).forEach(
+          name => {
+              const validationRules = errors(values)[name];
+              formErrors[name] = validationRules ?
+                validationRules
+                .filter(validationRule => validationRule(values[name]))
+                .map(validationRule => validationRule(values[name]))
+                .pop()
+                : null;
+          }
+        );
 
-        return errors;
+        return formErrors;
     };
 
     return (
@@ -40,7 +48,7 @@ export const TestForm = () => {
               ({handleSubmit, form, submitting}) => {
                   return (
                     <form className={styles.fields} onSubmit={handleSubmit}>
-                        {renderControls(form.mutators)}
+                        {renderControls(form.mutators, styles.error)}
 
                         <SubmitButtons
                           onClick={() => console.log(form)}

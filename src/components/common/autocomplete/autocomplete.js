@@ -46,36 +46,36 @@ export default class Autocomplete extends Component {
 
     render() {
         const {
+            input,
             options,
             type,
-            meta
+            hasError
         } = this.props;
 
         return (
-          <div className="root">
-              <FormControl
-                fullWidth
-                error={meta.touched && meta.error}
-              >
-                  <NoSsr>
-                      <Select
-                        options={options}
-                        placeholder="Search a value"
-                        value={this.state.selectedOption}
-                        onChange={this.onChange}
-                        isMulti={type === AUTOCOMPLETE_TYPE.MULTI}
-                        components={components}
-                      />
-                  </NoSsr>
-              </FormControl>
-          </div>
+          <FormControl
+            fullWidth
+            error={hasError}
+          >
+              <NoSsr>
+                  <Select
+                    {...input}
+                    options={options}
+                    placeholder="Search a value"
+                    value={this.state.selectedOption}
+                    onChange={this.onChange}
+                    isMulti={type === AUTOCOMPLETE_TYPE.MULTI}
+                    components={components}
+                  />
+              </NoSsr>
+          </FormControl>
         );
     }
 }
 
 Autocomplete.propTypes = {
     input: PropTypes.object.isRequired,
-    meta: PropTypes.object.isRequired,
+    hasError: PropTypes.bool.isRequired,
     type: PropTypes.string.isRequired,
     mutators: PropTypes.object.isRequired,
     options: PropTypes.arrayOf(PropTypes.shape({

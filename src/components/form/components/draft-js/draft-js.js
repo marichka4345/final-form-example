@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {Field} from 'react-final-form';
 import DraftJsEditor from '../../../common/draft-js/draft-js';
+import {shouldDisplayError} from '../../../../services/control-errors';
 
-export const DraftJs = ({name, mutators}) => {
-    const renderDraftJs = ({input: {name, value}}) => {
+export const DraftJs = ({name, mutators, renderError}) => {
+    const renderDraftJs = ({input, meta}) => {
         const controlProps = {
-            name,
-            value,
-            mutators
+            input,
+            mutators,
+            hasError: shouldDisplayError(meta)
         };
 
         return (
-          <DraftJsEditor {...controlProps} />
+          <Fragment>
+              {renderError(meta)}
+              <DraftJsEditor {...controlProps} />
+          </Fragment>
         );
     };
 
@@ -20,5 +25,11 @@ export const DraftJs = ({name, mutators}) => {
           {renderDraftJs}
       </Field>
     );
+};
+
+DraftJs.propTypes = {
+    name: PropTypes.string.isRequired,
+    mutators: PropTypes.object.isRequired,
+    renderError: PropTypes.func.isRequired
 };
 
