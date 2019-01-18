@@ -4,6 +4,7 @@ import {renderControls} from './services/control-factory';
 import {INITIAL_VALUES, errors} from './constants/form-config';
 import {FORM_SCHEMA} from './constants/form-config';
 import {SubmitButtons} from '../submit-buttons/submit-buttons';
+import ListControl from '../common/list/list';
 import styles from './form.module.css';
 
 export const TestForm = () => {
@@ -55,6 +56,8 @@ export const TestForm = () => {
                           isSubmitting={submitting}
                           portalContainerSelector="submit-buttons"
                         />
+
+                        <ListControl />
                     </form>
                   )
               }
