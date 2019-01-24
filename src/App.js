@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, {Fragment} from 'react';
 
 import JssProvider from 'react-jss/lib/JssProvider';
-import { create } from 'jss';
-import { createGenerateClassName, jssPreset } from '@material-ui/core/styles';
+import {create} from 'jss';
+import {createGenerateClassName, jssPreset} from '@material-ui/core/styles';
 
 import {TestForm} from './components/form/form';
 
@@ -12,18 +12,18 @@ const jss = create({
     insertionPoint: 'insertion-point-jss'
 });
 
-export default class App extends Component {
+const portalSelector = 'submit-buttons';
 
-    render() {
-        return (
-          <JssProvider jss={jss} generateClassName={generateClassName}>
-              <Fragment>
+export default () => {
 
-                  <div id="submit-buttons" />
-                  <TestForm />
+    return (
+      <JssProvider jss={jss} generateClassName={generateClassName}>
+          <Fragment>
 
-              </Fragment>
-          </JssProvider>
-        );
-    }
+              <div id={portalSelector} />
+              <TestForm portalSelector={portalSelector} />
+
+          </Fragment>
+      </JssProvider>
+    );
 }

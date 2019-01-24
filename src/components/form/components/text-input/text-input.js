@@ -1,19 +1,19 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Field} from 'react-final-form';
-import TextInputControl from '../../../common/text-input/text-input';
+import TextField from '@material-ui/core/TextField';
 import {shouldDisplayError} from '../../../../services/control-errors';
 
 export const TextInput  = ({name, renderError}) => {
-    const renderText = ({input, meta}) => {
-        const controlProps = {
-            input,
-            hasError: shouldDisplayError(meta)
-        };
-
+    const renderControl = ({input, meta}) => {
         return (
           <Fragment>
-              <TextInputControl  {...controlProps} />
+              <TextField
+                {...input}
+                label={input.name}
+                error={shouldDisplayError(meta)}
+              />
+
               {renderError(meta)}
           </Fragment>
         );
@@ -22,7 +22,7 @@ export const TextInput  = ({name, renderError}) => {
     return (
       <Field
         name={name}
-        render={renderText}
+        render={renderControl}
       />
     );
 };

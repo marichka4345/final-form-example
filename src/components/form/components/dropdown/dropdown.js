@@ -1,20 +1,32 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Field} from 'react-final-form';
-import DropdownControl from '../../../common/dropdown/dropdown';
-import {OPTIONS} from '../../../../constants/options';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 import {shouldDisplayError} from '../../../../services/control-errors';
 
-export const Dropdown = ({name, renderError}) => {
-    const renderDropdown = ({input, meta}) => {
-        const controlProps = {
-            input,
-            hasError: shouldDisplayError(meta),
-            values: OPTIONS
-        };
+export const Dropdown = ({name, renderError, options}) => {
+    const renderControl = ({input, meta}) => {
         return (
           <Fragment>
-              <DropdownControl {...controlProps} />
+              <FormControl
+                error={shouldDisplayError(meta)}
+                margin="dense"
+                {...input}
+              >
+                  <InputLabel>{input.name}</InputLabel>
+
+                  <Select {...input}>
+                      {
+                          options.map(({id, value}) => (
+                            <MenuItem key={id} value={id}>{value}</MenuItem>
+                          ))
+                      }
+                  </Select>
+              </FormControl>
+
               {renderError(meta)}
           </Fragment>
         );
@@ -23,12 +35,13 @@ export const Dropdown = ({name, renderError}) => {
     return (
       <Field
         name={name}
-        render={renderDropdown}
+        render={renderControl}
       />
     );
 };
 
 Dropdown.propTypes = {
     name: PropTypes.string.isRequired,
-    renderError: PropTypes.func.isRequired
+    renderError: PropTypes.func.isRequired,
+    options: PropTypes.array.isRequired
 };

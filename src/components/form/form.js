@@ -1,37 +1,49 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Form} from 'react-final-form';
 import {renderControls} from './services/control-factory';
-import {INITIAL_VALUES, errors} from './constants/form-config';
-import {FORM_SCHEMA} from './constants/form-config';
+import {
+    INITIAL_VALUES,
+    FORM_SCHEMA,
+    MUTATORS,
+    getValidationRules
+} from './constants/form-config';
+import {composeValidators} from '../../services/validation';
 import {SubmitButtons} from '../submit-buttons/submit-buttons';
-import ListControl from '../common/list/list';
+import {TEXT1} from '../../constants/form-fields';
+import {sleep, getServerError} from '../../services/helpers';
+
 import styles from './form.module.css';
 
-export const TestForm = () => {
-    const onSubmit = (values) => {
-        new Promise(resolve => {
-            setTimeout(resolve, 2000);
-        }).then(() => {
-            console.log(values);
-        });
+export const TestForm = ({portalSelector}) => {
+    const onSubmit = async values => {
+        await sleep(1000);
+
+        window.alert('Submitted');
+        console.log(values);
+    };
+
+    const onSubmitWithError = async values => {
+        const errors = await getServerError([TEXT1]);
+        if (errors) {
+            return errors;
+        }
+
+        window.alert('Submitted');
+        console.log(values);
     };
 
     const validate = values => {
-        const formErrors = {};
+        const fieldNames = Object.keys(FORM_SCHEMA);
 
-        Object.keys(FORM_SCHEMA).forEach(
-          name => {
-              const validationRules = errors(values)[name];
-              formErrors[name] = validationRules ?
-                validationRules
-                .filter(validationRule => validationRule(values[name]))
-                .map(validationRule => validationRule(values[name]))
-                .pop()
-                : null;
-          }
+        return fieldNames.reduce(
+          (errors, name) => {
+              const validationRules = getValidationRules(values)[name] || [];
+              errors[name] = composeValidators(validationRules)(values[name]);
+              return errors;
+          },
+          {}
         );
-
-        return formErrors;
     };
 
     return (
@@ -39,29 +51,30 @@ export const TestForm = () => {
         onSubmit={onSubmit}
         validate={validate}
         initialValues={INITIAL_VALUES}
-        mutators={{
-            setValue ([name, newValue], state, {changeValue}) {
-                changeValue(state, name, () => newValue);
-            }
-        }}
+        mutators={MUTATORS}
       >
           {
-              ({handleSubmit, form, submitting}) => {
+              ({handleSubmit, form: {submit, mutators}, submitting, values}) => {
+                  console.log(values);
                   return (
                     <form className={styles.fields} onSubmit={handleSubmit}>
-                        {renderControls(form.mutators, styles.error)}
+                        {renderControls(mutators)}
 
                         <SubmitButtons
-                          onClick={() => form.submit()}
+                          onSubmit={() => submit()}
+                          onSubmitWithoutValidation={() => onSubmit(values)}
+                          onSubmitWithError={() => onSubmitWithError(values)}
                           isSubmitting={submitting}
-                          portalContainerSelector="submit-buttons"
+                          portalSelector={portalSelector}
                         />
-
-                        <ListControl />
                     </form>
                   )
               }
           }
       </Form>
     );
+};
+
+TestForm.propTypes = {
+    portalSelector: PropTypes.string.isRequired
 };
