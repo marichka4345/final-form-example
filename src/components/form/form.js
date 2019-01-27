@@ -16,18 +16,12 @@ import {sleep, getServerError} from '../../services/helpers';
 import styles from './form.module.css';
 
 export const TestForm = ({portalSelector}) => {
-    const onSubmit = async values => {
-        await sleep(1000);
-
-        window.alert('Submitted');
-        console.log(values);
-    };
-
-    const onSubmitWithError = async values => {
-        const errors = await getServerError([TEXT1]);
-        if (errors) {
-            return errors;
+    const handleSubmit = async values => {
+        if (values[TEXT1] !== 'sun') {
+            return await getServerError([TEXT1]);
         }
+
+        await sleep(1000);
 
         window.alert('Submitted');
         console.log(values);
@@ -39,7 +33,10 @@ export const TestForm = ({portalSelector}) => {
         return fieldNames.reduce(
           (errors, name) => {
               const validationRules = getValidationRules(values)[name] || [];
-              errors[name] = composeValidators(validationRules)(values[name]);
+              const fieldError = composeValidators(validationRules)(values[name]);
+              if (fieldError) {
+                errors[name] = fieldError;
+              }
               return errors;
           },
           {}
@@ -48,22 +45,20 @@ export const TestForm = ({portalSelector}) => {
 
     return (
       <Form
-        onSubmit={onSubmit}
-        validate={validate}
+        onSubmit={handleSubmit}
         initialValues={INITIAL_VALUES}
         mutators={MUTATORS}
+        validate={validate}
       >
           {
               ({handleSubmit, form: {submit, mutators}, submitting, values}) => {
-                  console.log(values);
                   return (
                     <form className={styles.fields} onSubmit={handleSubmit}>
                         {renderControls(mutators)}
 
                         <SubmitButtons
                           onSubmit={() => submit()}
-                          onSubmitWithoutValidation={() => onSubmit(values)}
-                          onSubmitWithError={() => onSubmitWithError(values)}
+                          onSubmitWithoutValidation={() => handleSubmit(values)}
                           isSubmitting={submitting}
                           portalSelector={portalSelector}
                         />

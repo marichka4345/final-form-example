@@ -21,7 +21,6 @@ export class SubmitButtons extends Component {
         const {
             onSubmit,
             onSubmitWithoutValidation,
-            onSubmitWithError,
             isSubmitting
         } = this.props;
 
@@ -32,15 +31,15 @@ export class SubmitButtons extends Component {
                 onClick={onSubmit}
                 title="Save with validation"
               />
+              <p className={styles.prompt}>
+                  Server error on Text1 will be returned after successful submit
+                  if the value is other than <strong>sun</strong>
+              </p>
+
               <SubmitButton
                 isSubmitting={isSubmitting}
                 onClick={onSubmitWithoutValidation}
                 title="Save without validation"
-              />
-              <SubmitButton
-                isSubmitting={isSubmitting}
-                onClick={onSubmitWithError}
-                title="Save with server error"
               />
           </div>,
           this.element
@@ -52,6 +51,5 @@ SubmitButtons.propTypes = {
     portalSelector: PropTypes.string.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    onSubmitWithoutValidation: PropTypes.func.isRequired,
-    onSubmitWithError: PropTypes.func.isRequired
+    onSubmitWithoutValidation: PropTypes.func.isRequired
 };
