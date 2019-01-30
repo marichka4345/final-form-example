@@ -16,11 +16,18 @@ import {sleep, getServerError} from '../../services/helpers';
 import styles from './form.module.css';
 
 export const TestForm = ({portalSelector}) => {
-    const handleSubmit = async values => {
+    const onSubmit = async values => {
         if (values[TEXT1] !== 'sun') {
             return await getServerError([TEXT1]);
         }
 
+        await sleep(1000);
+
+        window.alert('Submitted');
+        console.log(values);
+    };
+
+    const onSubmitWithoutValidation = async values => {
         await sleep(1000);
 
         window.alert('Submitted');
@@ -45,7 +52,7 @@ export const TestForm = ({portalSelector}) => {
 
     return (
       <Form
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
         initialValues={INITIAL_VALUES}
         mutators={MUTATORS}
         validate={validate}
@@ -58,7 +65,7 @@ export const TestForm = ({portalSelector}) => {
 
                         <SubmitButtons
                           onSubmit={() => submit()}
-                          onSubmitWithoutValidation={() => handleSubmit(values)}
+                          onSubmitWithoutValidation={() => onSubmitWithoutValidation(values)}
                           isSubmitting={submitting}
                           portalSelector={portalSelector}
                         />
