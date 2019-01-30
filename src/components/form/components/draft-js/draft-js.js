@@ -102,12 +102,14 @@ export class DraftJs extends Component {
     };
 
     render() {
-        const {name} = this.props;
+        const {name, validate, validateFields} = this.props;
 
         return (
           <Field
             name={name}
             render={this.renderEditor}
+            validate={validate}
+            validateFields={validateFields}
           />
         );
     }
@@ -116,6 +118,8 @@ export class DraftJs extends Component {
 DraftJs.propTypes = {
     name: PropTypes.string.isRequired,
     setValue: PropTypes.func.isRequired,
-    renderError: PropTypes.func.isRequired
+    renderError: PropTypes.func.isRequired,
+    validate: PropTypes.func.isRequired,
+    validateFields: PropTypes.array.isRequired
 };
 

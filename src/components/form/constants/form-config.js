@@ -57,7 +57,7 @@ export const MUTATORS = {
     }
 };
 
-export const getValidationRules = (values) => ({
+export const getValidationRules = values => ({
     [FIELDS.TEXT1]: [
       required('Text1 is required'),
       min(2, 'Text1 should have minimum 2 symbols'),

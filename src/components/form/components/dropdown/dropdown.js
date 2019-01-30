@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import {shouldDisplayError} from '../../../../services/control-errors';
 
-export const Dropdown = ({name, renderError, options}) => {
+export const Dropdown = ({name, renderError, options, validate, validateFields}) => {
     const renderControl = ({input, meta}) => {
         return (
           <Fragment>
@@ -36,6 +36,8 @@ export const Dropdown = ({name, renderError, options}) => {
       <Field
         name={name}
         render={renderControl}
+        validate={validate}
+        validateFields={validateFields}
       />
     );
 };
@@ -43,5 +45,7 @@ export const Dropdown = ({name, renderError, options}) => {
 Dropdown.propTypes = {
     name: PropTypes.string.isRequired,
     renderError: PropTypes.func.isRequired,
-    options: PropTypes.array.isRequired
+    options: PropTypes.array.isRequired,
+    validate: PropTypes.func.isRequired,
+    validateFields: PropTypes.array.isRequired
 };

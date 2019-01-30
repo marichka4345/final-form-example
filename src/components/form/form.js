@@ -4,11 +4,8 @@ import {Form} from 'react-final-form';
 import {renderControls} from './services/control-factory';
 import {
     INITIAL_VALUES,
-    FORM_SCHEMA,
     MUTATORS,
-    getValidationRules
 } from './constants/form-config';
-import {composeValidators} from '../../services/validation';
 import {SubmitButtons} from '../submit-buttons/submit-buttons';
 import {TEXT1} from '../../constants/form-fields';
 import {sleep, getServerError} from '../../services/helpers';
@@ -34,34 +31,17 @@ export const TestForm = ({portalSelector}) => {
         console.log(values);
     };
 
-    const validate = values => {
-        const fieldNames = Object.keys(FORM_SCHEMA);
-
-        return fieldNames.reduce(
-          (errors, name) => {
-              const validationRules = getValidationRules(values)[name] || [];
-              const fieldError = composeValidators(validationRules)(values[name]);
-              if (fieldError) {
-                errors[name] = fieldError;
-              }
-              return errors;
-          },
-          {}
-        );
-    };
-
     return (
       <Form
         onSubmit={onSubmit}
         initialValues={INITIAL_VALUES}
         mutators={MUTATORS}
-        validate={validate}
       >
           {
               ({handleSubmit, form: {submit, mutators}, submitting, values}) => {
                   return (
                     <form className={styles.fields} onSubmit={handleSubmit}>
-                        {renderControls(mutators)}
+                        {renderControls(values, mutators)}
 
                         <SubmitButtons
                           onSubmit={() => submit()}

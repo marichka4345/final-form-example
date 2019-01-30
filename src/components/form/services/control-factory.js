@@ -9,8 +9,9 @@ import {DraftJs} from '../components/draft-js/draft-js';
 import {TextInput} from '../components/text-input/text-input';
 import * as CONTROL_TYPE from '../../../constants/control-types';
 import {renderError} from '../../../services/control-errors';
+import {composeValidators} from '../../../services/validation';
 
-export const renderControls = mutators => {
+export const renderControls = (values, mutators) => {
     return Object.entries(CONFIG.FORM_SCHEMA).map(([name, controlData]) => {
         const {
             type,
@@ -20,10 +21,15 @@ export const renderControls = mutators => {
 
         const {setValue} = mutators;
 
+        const validationRules = CONFIG.getValidationRules(values)[name] || [];
+        const validate = value => composeValidators(validationRules)(value) || undefined;
+
         const commonProps = {
             name,
             key: name,
-            renderError
+            validateFields: [],
+            renderError,
+            validate
         };
 
         switch(type) {

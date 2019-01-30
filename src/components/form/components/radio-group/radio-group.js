@@ -8,7 +8,7 @@ import Radio from '@material-ui/core/Radio';
 import FormControl from '@material-ui/core/FormControl';
 import {shouldDisplayError} from '../../../../services/control-errors';
 
-export const RadioGroup = ({name, groupName, renderError, options}) => {
+export const RadioGroup = ({name, groupName, renderError, options, validate, validateFields}) => {
     const renderControl = ({input, meta}) => {
         return (
           <Fragment>
@@ -41,6 +41,8 @@ export const RadioGroup = ({name, groupName, renderError, options}) => {
         type="radio"
         name={name}
         render={renderControl}
+        validate={validate}
+        validateFields={validateFields}
       />
     );
 };
@@ -49,5 +51,7 @@ RadioGroup.propTypes = {
     name: PropTypes.string.isRequired,
     groupName: PropTypes.string.isRequired,
     renderError: PropTypes.func.isRequired,
-    options: PropTypes.array.isRequired
+    options: PropTypes.array.isRequired,
+    validate: PropTypes.func.isRequired,
+    validateFields: PropTypes.array.isRequired
 };
