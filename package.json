@@ -9,6 +9,7 @@
     "draft-js-inline-toolbar-plugin": "^3.0.0",
     "draft-js-plugins-editor": "^2.1.1",
     "final-form": "^4.11.0",
+    "final-form-set-field-touched": "^1.0.0",
     "jss": "^9.8.7",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",

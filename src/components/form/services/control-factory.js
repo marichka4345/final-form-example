@@ -16,7 +16,8 @@ export const renderControls = (values, mutators) => {
         const {
             type,
             autocompleteType,
-            groupName
+            groupName,
+            isEqual
         } = controlData;
 
         const {setValue} = mutators;
@@ -29,10 +30,15 @@ export const renderControls = (values, mutators) => {
             key: name,
             validateFields: [],
             renderError,
-            validate
+            validate,
+            isEqual
         };
 
         switch(type) {
+            case CONTROL_TYPE.TEXT:
+                return <TextInput
+                  {...commonProps}
+                />;
             case CONTROL_TYPE.DROPDOWN:
                 return <Dropdown
                   {...commonProps}
@@ -59,11 +65,8 @@ export const renderControls = (values, mutators) => {
                   {...commonProps}
                   setValue={setValue}
                 />;
-            case CONTROL_TYPE.TEXT:
             default:
-                return <TextInput
-                  {...commonProps}
-                />;
+                return null;
         }
     });
 };

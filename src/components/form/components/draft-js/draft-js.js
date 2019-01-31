@@ -102,7 +102,7 @@ export class DraftJs extends Component {
     };
 
     render() {
-        const {name, validate, validateFields} = this.props;
+        const {name, validate, validateFields, isEqual} = this.props;
 
         return (
           <Field
@@ -110,6 +110,7 @@ export class DraftJs extends Component {
             render={this.renderEditor}
             validate={validate}
             validateFields={validateFields}
+            isEqual={isEqual}
           />
         );
     }
@@ -120,6 +121,7 @@ DraftJs.propTypes = {
     setValue: PropTypes.func.isRequired,
     renderError: PropTypes.func.isRequired,
     validate: PropTypes.func.isRequired,
-    validateFields: PropTypes.array.isRequired
+    validateFields: PropTypes.array.isRequired,
+    isEqual: PropTypes.func.isRequired
 };
 

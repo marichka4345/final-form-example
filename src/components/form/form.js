@@ -1,61 +1,82 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Form} from 'react-final-form';
 import {renderControls} from './services/control-factory';
-import {
-    INITIAL_VALUES,
-    MUTATORS,
-} from './constants/form-config';
+import {INITIAL_VALUES, MUTATORS} from './constants/form-config';
 import {SubmitButtons} from '../submit-buttons/submit-buttons';
 import {TEXT1} from '../../constants/form-fields';
-import {sleep, getServerError} from '../../services/helpers';
-
+import {getServerError, getServerResponse} from '../../services/helpers';
 import styles from './form.module.css';
 
-export const TestForm = ({portalSelector}) => {
-    const onSubmit = async values => {
+export class TestForm extends Component {
+    state = {
+        isSubmitting: false
+    };
+
+    componentDidMount() {
+        console.log('Form initialized with ', INITIAL_VALUES);
+    }
+
+    changeIsSubmitting = isSubmitting => {
+        this.setState({isSubmitting});
+    };
+
+    onSubmit = async values => {
+        this.changeIsSubmitting(true);
+
         if (values[TEXT1] !== 'sun') {
-            return await getServerError([TEXT1]);
+            const {errors} = await getServerError([TEXT1]);
+            this.changeIsSubmitting(false);
+            console.log('Got error ', errors);
+            return errors;
         }
 
-        await sleep(1000);
+        const response = await getServerResponse(values);
+        this.changeIsSubmitting(false);
 
-        window.alert('Submitted');
-        console.log(values);
+        console.log('Submitted with ', response);
     };
 
-    const onSubmitWithoutValidation = async values => {
-        await sleep(1000);
+    onSubmitWithoutValidation = async values => {
+        this.changeIsSubmitting(true);
 
-        window.alert('Submitted');
-        console.log(values);
+        const response = await getServerResponse(values);
+        this.changeIsSubmitting(false);
+
+        console.log('Submitted with ', response);
     };
 
-    return (
-      <Form
-        onSubmit={onSubmit}
-        initialValues={INITIAL_VALUES}
-        mutators={MUTATORS}
-      >
-          {
-              ({handleSubmit, form: {submit, mutators}, submitting, values}) => {
-                  return (
-                    <form className={styles.fields} onSubmit={handleSubmit}>
-                        {renderControls(values, mutators)}
+    render() {
+        const {portalSelector} = this.props;
 
-                        <SubmitButtons
-                          onSubmit={() => submit()}
-                          onSubmitWithoutValidation={() => onSubmitWithoutValidation(values)}
-                          isSubmitting={submitting}
-                          portalSelector={portalSelector}
-                        />
-                    </form>
-                  )
+        return (
+          <Form
+            onSubmit={this.onSubmit}
+            initialValues={INITIAL_VALUES}
+            mutators={MUTATORS}
+          >
+              {
+                  ({handleSubmit, form: {submit, mutators}, values, dirty}) => {
+                      return (
+                        <form className={styles.fields} onSubmit={handleSubmit}>
+                            <p>Form is {dirty ? 'dirty': 'pristine'}</p>
+
+                            {renderControls(values, mutators)}
+
+                            <SubmitButtons
+                              onSubmit={submit}
+                              onSubmitWithoutValidation={() => this.onSubmitWithoutValidation(values)}
+                              isSubmitting={this.state.isSubmitting}
+                              portalSelector={portalSelector}
+                            />
+                        </form>
+                      )
+                  }
               }
-          }
-      </Form>
-    );
-};
+          </Form>
+        );
+    }
+}
 
 TestForm.propTypes = {
     portalSelector: PropTypes.string.isRequired

@@ -1,10 +1,11 @@
-import {EditorState, ContentState} from 'draft-js';
+import {EditorState} from 'draft-js';
 import * as FIELDS from '../../../constants/form-fields';
 import {OPTIONS} from '../../../constants/options';
 import * as CONTROL_TYPE from '../../../constants/control-types';
 import {text} from '../../../constants/validation-regexps';
 import {AUTOCOMPLETE_TYPE} from '../../../constants/autocomplete-types';
 import {min, max, required, isEqual, matches, minDraftJs, maxDraftJs} from '../../../services/validation';
+import {getDraftText} from '../../../services/helpers';
 
 export const FORM_SCHEMA = {
     [FIELDS.TEXT1]: {
@@ -31,7 +32,8 @@ export const FORM_SCHEMA = {
         type: CONTROL_TYPE.SWITCH
     },
     [FIELDS.DRAFTJS]: {
-        type: CONTROL_TYPE.DRAFTJS
+        type: CONTROL_TYPE.DRAFTJS,
+        isEqual: (a, b) => getDraftText(a) === getDraftText(b)
     },
     [FIELDS.RADIOGROUP1]: {
         type: CONTROL_TYPE.RADIOGROUP,
@@ -47,7 +49,7 @@ export const INITIAL_VALUES = {
     [FIELDS.AUTOCOMPLETE1]: '',
     [FIELDS.AUTOCOMPLETE2]: [],
     [FIELDS.TOGGLER]: false,
-    [FIELDS.DRAFTJS]: EditorState.createWithContent(ContentState.createFromText('')),
+    [FIELDS.DRAFTJS]: EditorState.createEmpty(),
     [FIELDS.RADIOGROUP1]: ''
 };
 

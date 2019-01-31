@@ -1,3 +1,5 @@
+import {getDraftText} from './helpers';
+
 export const composeValidators = validators => value =>
   validators.reduce((error, validator) => error || validator(value), null);
 
@@ -19,13 +21,7 @@ export const isEqual = (toCompareWith, msg) =>
   value => validateValue(value === toCompareWith, msg);
 
 export const minDraftJs = (number, msg) =>
-    value => {
-        const text = value.getCurrentContent().getPlainText('');
-        return validateValue(text.length >= number, msg);
-    };
+    value => validateValue(getDraftText(value).length >= number, msg);
 
 export const maxDraftJs = (number, msg) =>
-  value => {
-      const text = value.getCurrentContent().getPlainText('');
-      return validateValue(text.length < number, msg);
-  };
+  value => validateValue(getDraftText(value).length < number, msg);
